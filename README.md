@@ -91,7 +91,7 @@ To retrieve an instance from AsyncStorage simply type something like the followi
 MyModel.get(1).then((my_model) => this.my_model_1_copy = my_model);
 ```
 
-The `refresh_models` parameter to the method tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects. If you set it to true, then it will use the `_id` of the nested SweetModel object to pull it's instance from AsyncStorage, then update and save the parent object.
+The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects. If you set it to true, then it will use the `_id` of the nested SweetModel object to pull it's instance from AsyncStorage, then update and save the parent object.
 
 ##### .save(callback = null)
 
