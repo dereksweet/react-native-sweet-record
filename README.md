@@ -91,7 +91,7 @@ To retrieve an instance from AsyncStorage simply type something like the followi
 MyModel.get(1).then((my_model) => this.my_model_1_copy = my_model);
 ```
 
-The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects. If you set it to true, then it will use the `_id` of the nested SweetModel object to pull it's instance from AsyncStorage, then update and save the parent object.
+The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects. If you set it to true, then it will use the `_id` of the nested SweetModel object to pull it's instance from AsyncStorage, then update and save the parent object instance.
 
 ##### .save(callback = null)
 
@@ -124,6 +124,8 @@ MyModel.all().then((my_models) => this.all_my_models = my_models);
 `all_my_models` will then contain an array of objects that can be treated just like any other instance of your object. For example change the value of an attribute for the 2nd model in your results simply type `this.all_my_models[1]._field1_integer = 5` then `this.all_my_models[1].save()` and that 2nd object should be updated in memory AND in the persisted storage.
 
 You have the option of passing in a `sort_field` and a `sort_order` for ordering your results. Simply pass in the name of the attribute, as a string, to `sort_field` and either `ASC` or `DESC` to `sort_order` for ascending and descending orders respectively. 
+
+The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects within any of the results returned by `all()`. If you set it to true, then it will use the `_id` of the nested SweetModel objects to pull their instances from AsyncStorage, then update and save the parent object instanecs.
 
 ### Examples
 
