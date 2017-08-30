@@ -95,9 +95,7 @@ my_model_1._field3_array = ['this','is','awesome']
 my_model_1.save()
 ```
 
-... and it's done. 
-
-React-native-sweet-record will take care of assigning your instance an `_id` and persisting it to the device storage for later retrieval. Getting your object back from AsyncStorage is as simple as typing (presuming your instance `_id` is 1):
+... and it's done. React-native-sweet-record will take care of assigning your instance an `_id` and persisting it to the device storage for later retrieval. Getting your object back from AsyncStorage is as simple as typing (presuming your instance `_id` is 1):
 
 ```
 MyModel.get(1).then((my_model) => this.my_model_1_copy = my_model)
