@@ -83,7 +83,7 @@ See immediately below this for a list of all the available commands. I think you
 
 ### Available Commands
 
-##### .get(id, refresh_models=false)
+#### .get(id, refresh_models=false)
 
 To retrieve an instance from AsyncStorage simply type something like the following. This would be if you wanted to retrieve the instance with an `_id` of 1:
 
@@ -93,7 +93,7 @@ MyModel.get(1).then((my_model) => this.my_model_1_copy = my_model);
 
 The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects. If you set it to true, then it will use the `_id` of the nested SweetModel object to pull it's instance from AsyncStorage, then update and save the parent object instance.
 
-##### .save(callback = null)
+#### .save(callback = null)
 
 To save an instance of your model to AsyncStorage, simply type something like the following: 
 
@@ -103,7 +103,7 @@ my_model_1.save();
 
 You have the option of providing a callback function to be run once the save operation is complete. This is so you can achieve some form of synchronous operation in case you have UI elements that need to be updated when the object has been completely persisted to storage, or any other such need for synchronous behavior. 
 
-##### .destroy(callback = null)
+#### .destroy(callback = null)
 
 To permanently remove an instance of your model from AsyncStorage, simply type something like the following:
 
@@ -113,7 +113,7 @@ my_model_1.destroy();
 
 You have the option of providing a callback function to be run once the destroy operation is complete. This is so you can achieve some form of synchronous operation in case you have UI elements that need to be updated when the object has been completely removed from storage, or any other such need for synchronous behavior. 
 
-##### .all(sort_field = '_id', sort_order = 'ASC', refresh_models = false)
+#### .all(sort_field = '_id', sort_order = 'ASC', refresh_models = false)
 
 To retrieve all instances of your model from AsyncStorage, returned as an array of objects, simply type something like the following: 
 
