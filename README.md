@@ -77,7 +77,32 @@ Now that you've defined your model you are free to include it in any of your oth
 import MyModel from './models/MyModel';
 ```
 
-... and then you get all sorts of powerful data storage and retrieval for the model you have defined. For example, to create a new instance of your model all you need to do is type `let my_model_1 = new MyModel()` and you've got your object. You can now set any of the attributes for your model by simply typing `my_model_1._field1_integer = 3`, or `my_model_1._field2_string = 'blah'`, or `my_model_1._field3_array = ['this','is','awesome']` and the values will be associated with the fields. When you're ready to save your instance to AsyncStorage simply type `my_model_1.save()` and it's done. React-native-sweet-record will take care of assigning your instance an `_id` and persisting it to the device storage for later retrieval. Getting your object back from AsyncStorage is as simple as typing `MyModel.get(1).then((my_model) => this.my_model_1_copy = my_model)` (presuming your instance `_id` is 1), to which modifications can be made to the attributes, and then saved again to overwrite the previous version.
+... and then you get all sorts of powerful data storage and retrieval for the model you have defined. For example, to create a new instance of your model all you need to do is type:
+
+`let my_model_1 = new MyModel()`
+
+... and you've got your object. You can now set any of the attributes for your model by simply typing things like:
+
+```
+my_model_1._field1_integer = 3
+my_model_1._field2_string = 'blah'
+my_model_1._field3_array = ['this','is','awesome']
+```
+
+...and the values will be associated with the fields. When you're ready to save your instance to AsyncStorage simply type:
+
+```
+my_model_1.save()
+```
+
+... and it's done. 
+
+React-native-sweet-record will take care of assigning your instance an `_id` and persisting it to the device storage for later retrieval. Getting your object back from AsyncStorage is as simple as typing (presuming your instance `_id` is 1):
+
+```
+MyModel.get(1).then((my_model) => this.my_model_1_copy = my_model)
+```
+... to which modifications can be made to the attributes, and then saved again to overwrite the previous version.
 
 See immediately below this for a list of all the available commands. I think you'll agree that they are scrumptious. 
 
