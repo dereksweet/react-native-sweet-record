@@ -81,7 +81,7 @@ import MyModel from './models/MyModel';
 
 See immediately below this for a list of all the available commands. I think you'll agree that they are scrumptious. 
 
-#### Available Commands
+### Available Commands
 
 ##### .get(id, refresh_models=false)
 
