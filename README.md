@@ -75,7 +75,7 @@ There are 4 static functions that can be overridden, two which must be overridde
 
 The two required methods that must exist in your model are `databaseName()` and `tableName()`. These are necessary in defining the prefix that will be prepended to the key used to reference every instance of your model that you store. They should both simply return a string, I recommend a CamelCase string for `databaseName()` and a snake_case string for `tableName()`. Every model should share the same `databaseName()` and have a unique `tableName()`. 
 
-Think of these as roughly equivalent to the database instance name and table names found for a traditional model representation in a relational database. As mentioned the strings will be used to simply build a unique key for each object in the AsyncStorage key/value storage system. For example, using the basic model above the first object created of type MyModel would get saved under the key `@MyDatabaseName:my_models/1`, not that you ever need to know that but trying to provide a little insight into how this library works. 
+Think of these as roughly equivalent to the database instance name and table names found for a traditional model representation in a relational database. As mentioned the strings will be used to simply build a unique key for each object in the AsyncStorage key/value storage system. For example, using the basic model above the first object created of type MyModel would get saved under the key `@MyDatabaseName:my_models/1`, not that you will ever need to know that level of detail to use the library, but am trying to provide a little insight into how this library works. 
 
 The two optional methods that must exist if you want certain fields to behave appropriately are `dateFields()` and `modelFields()`. These must return an array of strings listing any attributes that you have that are of type DateTime or a nested SweetModel. Since the attribute values must be serialized into a JSON string and read back out it's imperative that the system know how to properly encode them upon retrieval. Hopefully from the example above it is clear how to use `dateFields()`. An example of `modelFields()` will be provided below. 
 
@@ -122,7 +122,7 @@ To retrieve an instance from AsyncStorage simply type something like the followi
 MyModel.get(1).then((my_model) => this.my_model_1_copy = my_model);
 ```
 
-The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects. If you set it to true, then it will use the `_id` of the nested SweetModel object to pull it's instance from AsyncStorage, then update and save the parent object instance.
+The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects. If you set it to true, then it will use the `_id` of the nested SweetModel object to pull it's instance from AsyncStorage, then update and save the parent object instance. If you want your nested objects to remain consistent with their sibling objects then set `refresh_models` to true. If, however, you want your nested object to be more of a snapshot of what it was when the parent object was saved then keep it false. 
 
 #### .save(callback = null)
 
@@ -156,7 +156,40 @@ MyModel.all().then((my_models) => this.all_my_models = my_models);
 
 You have the option of passing in a `sort_field` and a `sort_order` for ordering your results. Simply pass in the name of the attribute, as a string, to `sort_field` and either `ASC` or `DESC` to `sort_order` for ascending and descending orders respectively. 
 
-The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects within any of the results returned by `all()`. If you set it to true, then it will use the `_id` of the nested SweetModel objects to pull their instances from AsyncStorage, then update and save the parent object instanecs.
+The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects within any of the results returned by `all()`. If you set it to true, then it will use the `_id` of the nested SweetModel objects to pull their instances from AsyncStorage, then update and save the parent object instances. If you want your nested objects to remain consistent with their sibling objects then set `refresh_models` to true. If, however, you want your nested object to be more of a snapshot of what it was when the parent object was saved, then keep it false. 
+
+#### .destroy_all(callback = null)
+
+To destroy all instances of your model from AsyncStorage simply type something like the following:
+
+```
+MyModel.destroy_all()
+```
+
+This will completely wipe every instance of your model from AsyncStorage so be careful when using it! You have the option of providing a callback function to be run once the destroy_all operation is complete. This is so you can achieve some form of synchronous operation in case you have UI elements that need to be updated when the objects have been completely removed from storage, or any other such need for synchronous behavior.  
+
+#### .where(filter_hash, operation = 'AND', sort_field = '_id', sort_order= 'ASC', refresh_models = false)
+
+To retrieve a filtered array of your models based on your specifications this is how you do it. Let me start by saying this can be extremely slow, so use it wisely. AsyncStorage is just a key/value storage system so the only way that react-native-sweet-record can filter results is by pulling every single instance of your model, looping through them, and plucking out the ones that match your criteria. If you ignore my recomendation at the start of this README and use this library to manage thousands upon thousands of records the `where()` method is where you are going to feel the pain of a million dickslaps.
+
+The only required parameter to `where()` is the `filter_hash`. What you want to want to pass in for this parameter is a hash that represents what would be your `WHERE` clauses in a relational database. The key for each member of the hash should be the name of the attribute you want to filter on, and the value should be a string that contains two parts separated by a vertical bar character. The first half of the value string is the operator you want to use in the comparison, and the second half is the value you want to compare it to. 
+
+For example, if I wanted to get all instances of the MyModel, defined above, that had a value for `field_1_integer` that was greater than 3 and had a value for `field_2_string` that contained the word "fartknuckle" I would type something like the following:
+
+```
+MyModel.where({"field_1_integer":"GT|3", "field_2_string":"LIKE|'fartknuckle'"})
+  .then((my_filtered_models) => this.my_filtered_models = my_filtered_models);
+```
+
+The available operators to use in the first half of a value string for `filter_hash` are: `EQ`, `GT`, `GTE`, `LT`, `LTE`, and `LIKE`. Hopefully they are all self-explanatory. For the nooblets that are reading this `LTE` and `GTE` stand for "Less-Than-Or-Equal-To" and "Greater-Than-Or-Equal-To" respectively. 
+
+The remaining optional parameters to the `where()` method are `operation`, `sort_field`, `sort_order`, and `refresh_models`.
+
+`operation` can be either `AND` or `OR`. This is the conjunction that is placed between the where clauses defined by your `filter_hash`. If you were to pass in `OR` for the example just above, that would give you any instance of MyModel that had a value for `field_1_integer` that was greater than 3 OR it had a value for `field_2_string` that contained the word "fartknuckle". Currently there is no way to combine `AND` and `OR` conjunctions, it's one or the other.
+
+You have the option of passing in a `sort_field` and a `sort_order` for ordering your results. Simply pass in the name of the attribute, as a string, to `sort_field` and either `ASC` or `DESC` to `sort_order` for ascending and descending orders respectively. 
+
+The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects within any of the results returned by `where()`. If you set it to true, then it will use the `_id` of the nested SweetModel objects to pull their instances from AsyncStorage, then update and save the parent object instances. If you want your nested objects to remain consistent with their sibling objects then set `refresh_models` to true. If, however, you want your nested object to be more of a snapshot of what it was when the parent object was saved, then keep it false. 
 
 ### Examples
 
