@@ -191,6 +191,65 @@ You have the option of passing in a `sort_field` and a `sort_order` for ordering
 
 The `refresh_models` parameter tells react-native-sweet-record that you want to refresh the objects for any attributes that happen to be nested SweetModel objects within any of the results returned by `where()`. If you set it to true, then it will use the `_id` of the nested SweetModel objects to pull their instances from AsyncStorage, then update and save the parent object instances. If you want your nested objects to remain consistent with their sibling objects then set `refresh_models` to true. If, however, you want your nested object to be more of a snapshot of what it was when the parent object was saved, then keep it false. 
 
+### Nested Models
+
+As you've for sure read above by now, it is possible to nest SweetModel object as attributes of other SweetModel objects! Since each SweetModel can be serialized as JSON, and every attribute in a SweetModel gets seralized into JSON, it's entirely possible to nest one SweetModel within another. You just need to let react-native-sweet-model know which attributes are nested models so when they are retrieved it knows to intialize them as such.
+
+For example, let's say we wanted to add a new nested model, MyOtherModel, to MyModel defined at the beginning of this readme. The file contents for your model definition would now look something like this: 
+
+```
+import SweetModel from 'react-native-sweet-model';
+import MyOtherModel from './MyOtherModel`
+
+const defaults = {
+  _field1_integer: 0,
+  _field2_string: '',
+  _field3_array: [],
+  _field4_model: new MyOtherModel()
+};
+
+export default class MyModel extends SweetModel {
+  static databaseName() {
+    return "MyDatabaseName";
+  }
+
+  static tableName() {
+    return "my_models";
+  }
+
+  static dateFields() {
+    return ['_created_at', '_updated_at'];
+  }
+  
+  static modelFields() {
+    return [{ field: '_field4_model', class: MyOtherModel, array: false}];
+  }
+
+  constructor(data = {
+    _id: -1,
+    _field1_integer: defaults._field1_integer,
+    _field2_string: defaults._field2_string,
+    _field3_array: defaults._field3_array,
+    _field4_model: defaults._field4_model,
+    _created_at: new Date(),
+    _updated_at: new Date()
+  })
+  {
+    super();
+
+    this._id             = data._id;
+    this._field1_integer = data._field1_integer || defaults._field1_integer;
+    this._field2_string  = data._field2_string || defaults._field2_string;
+    this._field3_array   = data._field3_array || defaults._field3_array;
+    this._field4_model   = new MyOtherModel(data._field4_model || defaults._field4_model);
+    this._created_at     = data._created_at;
+    this._updated_at     = data._updated_at;
+  }
+}
+```
+
+Each element of `modelFields()` must be a hash with 3 keys and corresponding values. `field` specifies that name of the attribute that is a nested model, `class` specifies what type of nested model it is, and `array` should be either true or false to tell the system if it is just a single instance of the nested model or an array of them. To see an example of a nested model that is an array see the [**SetList**]](https://github.com/dereksweet/ComedyCompanion/blob/master/src/models/set_list.js) model for "The Comedy Companion". 
+
 ### Examples
 
 To see some production level usage of the library, please see the [**src/models/**](https://github.com/dereksweet/ComedyCompanion/tree/master/src/models) folder for "The Comedy Companion" project. There are 4 models within that exhibit, between them, all of the major features of react-native-sweet-record. You'll see examples of how to properly use dates, arrays, hashes, and even other models, as field types. If it can be serialized in JSON, then react-native-sweet-record can manage that shit. 
