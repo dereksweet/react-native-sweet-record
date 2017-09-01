@@ -252,4 +252,4 @@ Each element of `modelFields()` must be a hash with 3 keys and corresponding val
 
 ### Examples
 
-To see some production level usage of the library, please see the [**src/models/**](https://github.com/dereksweet/ComedyCompanion/tree/master/src/models) folder for "The Comedy Companion" project. There are 4 models within that exhibit, between them, all of the major features of react-native-sweet-record. You'll see examples of how to properly use dates, arrays, hashes, and even other models, as field types. If it can be serialized in JSON, then react-native-sweet-record can manage that shit. 
+To see some production level usage of the library, please see the [**src/models/**](https://github.com/dereksweet/ComedyCompanion/tree/master/src/models) folder for "The Comedy Companion" project. There are 4 models within that exhibit, between them, all of the major features of react-native-sweet-record. You'll see examples of how to properly use dates, arrays, hashes, and even other nested Sweetmodels, as attributes. If it can be serialized in JSON, then react-native-sweet-record can manage it. 
