@@ -4,7 +4,7 @@ An ActiveRecord style layer that sits on top of React Native's AsyncStorage.
 
 ### Introduction
 
-Let me begin by saying that you'd have to be as bat shit crazy as a Donald Trump voter walking through Tijuana with one of those bright red "Make America Great Again" hats to use react-native-sweet-record for any sort of large-scale persistent data storage project. It is intended to be used for hundreds of records, not thousands. If your requirements are of that magnitude please investigate other react native solutions with an actual database behind them. 
+Let me begin by saying that you'd have to be bat shit crazy to use react-native-sweet-record for any sort of large-scale persistent data storage project. It is intended to be used for hundreds of records, not thousands. If your requirements are of that magnitude please investigate other react native solutions with an actual database behind them. 
 
 However, if you're looking for a bad-ass, mother-loving, salt-of-the-earth, ActiveRecord style library that doesn't require anything more than what the beautiful people behind the React Native AsyncStorage component have provided us then look no further. React-native-sweet-record is your huckleberry. 
 
