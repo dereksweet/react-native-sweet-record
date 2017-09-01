@@ -248,7 +248,7 @@ export default class MyModel extends SweetModel {
 }
 ```
 
-Each element of `modelFields()` must be a hash with 3 keys and corresponding values. `field` specifies that name of the attribute that is a nested model, `class` specifies what type of nested model it is, and `array` should be either true or false to tell the system if it is just a single instance of the nested model or an array of them. To see an example of a nested model that is an array see the [[**SetList**]](https://github.com/dereksweet/ComedyCompanion/blob/master/src/models/set_list.js) model for "The Comedy Companion". 
+Each element of `modelFields()` must be a hash with 3 keys and corresponding values. `field` specifies that name of the attribute that is a nested model, `class` specifies what type of nested model it is, and `array` should be either true or false to tell the system if it is just a single instance of the nested model or an array of them. To see an example of a nested model that is an array see the [**SetList**](https://github.com/dereksweet/ComedyCompanion/blob/master/src/models/set_list.js) model for "The Comedy Companion". 
 
 ### Examples
 
