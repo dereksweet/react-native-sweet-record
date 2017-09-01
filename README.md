@@ -174,10 +174,10 @@ To retrieve a filtered array of your models based on your specifications this is
 
 The only required parameter to `where()` is the `filter_hash`. What you want to want to pass in for this parameter is a hash that represents what would be your `WHERE` clauses in a relational database. The key for each member of the hash should be the name of the attribute you want to filter on, and the value should be a string that contains two parts separated by a vertical bar character. The first half of the value string is the operator you want to use in the comparison, and the second half is the value you want to compare it to. 
 
-For example, if I wanted to get all instances of the MyModel, defined above, that had a value for `field_1_integer` that was greater than 3 and had a value for `field_2_string` that contained the word "fartknuckle" I would type something like the following:
+For example, if I wanted to get all instances of the MyModel, defined above, that had a value for `field1_integer` that was greater than 3 and had a value for `field_2_string` that contained the word "fartknuckle" I would type something like the following:
 
 ```
-MyModel.where({"field_1_integer":"GT|3", "field_2_string":"LIKE|'fartknuckle'"})
+MyModel.where({"field1_integer":"GT|3", "field2_string":"LIKE|'fartknuckle'"})
   .then((my_filtered_models) => this.my_filtered_models = my_filtered_models);
 ```
 
@@ -185,7 +185,7 @@ The available operators to use in the first half of a value string for `filter_h
 
 The remaining optional parameters to the `where()` method are `operation`, `sort_field`, `sort_order`, and `refresh_models`.
 
-`operation` can be either `AND` or `OR`. This is the conjunction that is placed between the where clauses defined by your `filter_hash`. If you were to pass in `OR` for the example just above, that would give you any instance of MyModel that had a value for `field_1_integer` that was greater than 3 OR it had a value for `field_2_string` that contained the word "fartknuckle". Currently there is no way to combine `AND` and `OR` conjunctions, it's one or the other.
+`operation` can be either `AND` or `OR`. This is the conjunction that is placed between the where clauses defined by your `filter_hash`. If you were to pass in `OR` for the example just above, that would give you any instance of MyModel that had a value for `field1_integer` that was greater than 3 OR it had a value for `field2_string` that contained the word "fartknuckle". Currently there is no way to combine `AND` and `OR` conjunctions, it's one or the other.
 
 You have the option of passing in a `sort_field` and a `sort_order` for ordering your results. Simply pass in the name of the attribute, as a string, to `sort_field` and either `ASC` or `DESC` to `sort_order` for ascending and descending orders respectively. 
 
@@ -248,7 +248,7 @@ export default class MyModel extends SweetModel {
 }
 ```
 
-Each element of `modelFields()` must be a hash with 3 keys and corresponding values. `field` specifies that name of the attribute that is a nested model, `class` specifies what type of nested model it is, and `array` should be either true or false to tell the system if it is just a single instance of the nested model or an array of them. To see an example of a nested model that is an array see the [**SetList**]](https://github.com/dereksweet/ComedyCompanion/blob/master/src/models/set_list.js) model for "The Comedy Companion". 
+Each element of `modelFields()` must be a hash with 3 keys and corresponding values. `field` specifies that name of the attribute that is a nested model, `class` specifies what type of nested model it is, and `array` should be either true or false to tell the system if it is just a single instance of the nested model or an array of them. To see an example of a nested model that is an array see the [[**SetList**]](https://github.com/dereksweet/ComedyCompanion/blob/master/src/models/set_list.js) model for "The Comedy Companion". 
 
 ### Examples
 
