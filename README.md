@@ -4,7 +4,7 @@ An ActiveRecord style layer that sits on top of React Native's AsyncStorage.
 
 ### Introduction
 
-Let me begin by saying that you'd have to be as bat shit crazy as a Donald Trump voter walking through Harlem with one of those bright red, obnoxious, "Make America Great Again" hats to use react-native-sweet-record for any sort of large-scale persistent data storage project. It is intended to be used for hundreds of records, not thousands. If your requirements are of that magnitude please investigate other react native solutions with an actual database behind them. 
+Let me begin by saying that you'd have to be as bat shit crazy as a Donald Trump voter walking through Tijuana with one of those bright red "Make America Great Again" hats to use react-native-sweet-record for any sort of large-scale persistent data storage project. It is intended to be used for hundreds of records, not thousands. If your requirements are of that magnitude please investigate other react native solutions with an actual database behind them. 
 
 However, if you're looking for a bad-ass, mother-loving, salt-of-the-earth, ActiveRecord style library that doesn't require anything more than what the beautiful people behind the React Native AsyncStorage component have provided us then look no further. React-native-sweet-record is your huckleberry. 
 
@@ -41,7 +41,7 @@ export default class MyModel extends SweetModel {
   }
 
   static tableName() {
-    return "my_table_name";
+    return "my_models";
   }
 
   static dateFields() {
@@ -69,7 +69,15 @@ export default class MyModel extends SweetModel {
 }
 ```
 
-It may look like there is bit of heavy use of the `defaults` object there, but I assure you there is a method to the madness. That may be a bit of a hyperbole to use the word "madness" in such a context but just stick with me. 
+It may look like there is bit of heavy use of the `defaults` object there, but I assure you there is a method to the madness. Following this pattern allows you to automatically migrate old records as new attributes are added over time. Eventually I'd like to see this all abstracted into some kind of easily digested .yml file or something.
+
+There are 4 static functions that can be overridden, two which must be overridden and two that are optional. 
+
+The two required methods that must exist in your model are `databaseName()` and `tableName()`. These are necessary in defining the prefix that will be prepended to the key used to reference every instance of your model that you store. They should both simply return a string, I recommend a CamelCase string for `databaseName()` and a snake_case string for `tableName()`. Every model should share the same `databaseName()` and have a unique `tableName()`. 
+
+Think of these as roughly equivalent to the database instance name and table names found for a traditional model representation in a relational database. As mentioned the strings will be used to simply build a unique key for each object in the AsyncStorage key/value storage system. For example, using the basic model above the first object created of type MyModel would get saved under the key `@MyDatabaseName:my_models/1`, not that you ever need to know that but trying to provide a little insight into how this library works. 
+
+The two optional methods that must exist if you want certain fields to behave appropriately are `dateFields()` and `modelFields()`. These must return an array of strings listing any attributes that you have that are of type DateTime or a nested SweetModel. Since the attribute values must be serialized into a JSON string and read back out it's imperative that the system know how to properly encode them upon retrieval. Hopefully from the example above it is clear how to use `dateFields()`. An example of `modelFields()` will be provided below. 
 
 Now that you've defined your model you are free to include it in any of your other object files. Simply add the following import statement at the top of your file: 
 
@@ -95,7 +103,7 @@ my_model_1._field3_array = ['this','is','awesome']
 my_model_1.save()
 ```
 
-... and it's done. React-native-sweet-record will take care of assigning your instance an `_id` and persisting it to the device storage for later retrieval. Getting your object back from AsyncStorage is as simple as typing (presuming your instance `_id` is 1):
+... and it's done. React-native-sweet-record will take care of assigning your instance an `_id` and persisting it to the device storage for later retrieval. The instance you just saved will have it's `_id` set as well. Getting your object back from AsyncStorage is as simple as typing, presuming your instance `_id` is 1:
 
 ```
 MyModel.get(1).then((my_model) => this.my_model_1_copy = my_model)
