@@ -174,7 +174,7 @@ To retrieve a filtered array of your models based on your specifications this is
 
 The only required parameter to `where()` is the `filter_hash`. What you want to want to pass in for this parameter is a hash that represents what would be your `WHERE` clauses in a relational database. The key for each member of the hash should be the name of the attribute you want to filter on, and the value should be a string that contains two parts separated by a vertical bar character. The first half of the value string is the operator you want to use in the comparison, and the second half is the value you want to compare it to. 
 
-For example, if I wanted to get all instances of the MyModel, defined above, that had a value for `field1_integer` that was greater than 3 and had a value for `field_2_string` that contained the word "fartknuckle" I would type something like the following:
+For example, if I wanted to get all instances of the MyModel, defined above, that had a value for `field1_integer` that was greater than 3 and had a value for `field2_string` that contained the word "fartknuckle" I would type something like the following:
 
 ```
 MyModel.where({"field1_integer":"GT|3", "field2_string":"LIKE|'fartknuckle'"})
